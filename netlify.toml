@@ -3,8 +3,10 @@
   publish = ".next"
 
 [build.environment]
-  # Next.js 16 requires Node.js >= 20.9
-  NODE_VERSION = "20"
+  # Next.js 16 toolchain (nanoid@6 etc.) expects Node.js 22+
+  NODE_VERSION = "22"
+  # Avoid out-of-memory during the production build on Netlify's runner
+  NODE_OPTIONS = "--max-old-space-size=4096"
   # Netlify secrets scanning: skip build output and dependencies.
   # Real credentials are provided via Netlify environment variables
   # (Site Settings -> Environment Variables) and are never committed.
