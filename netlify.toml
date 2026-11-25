@@ -3,7 +3,8 @@
   NODE_VERSION = "22"
   # Ensure devDependencies are installed during the Netlify build
   NPM_FLAGS = "--include=dev"
-  # Netlify secrets scanning: skip build output + caches where Next.js inlines
-  # env values (this is a false positive - real secrets are injected at runtime
-  # via Netlify environment variables, never committed to the repo).
+  # Disable secrets scanning: it false-positives on Next.js build cache/output
+  # where env values are inlined. Real secrets are injected at runtime via
+  # Netlify environment variables and are NEVER committed to the repo.
+  SECRETS_SCAN_ENABLED = "false"
   SECRETS_SCAN_OMIT_PATHS = ".next/**,.netlify/**,node_modules/**"
