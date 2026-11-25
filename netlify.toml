@@ -7,6 +7,9 @@
   NODE_VERSION = "22"
   # Avoid out-of-memory during the production build on Netlify's runner
   NODE_OPTIONS = "--max-old-space-size=4096"
+  # Ensure devDependencies (typescript, tailwindcss, babel-plugin-react-compiler)
+  # are installed even if NODE_ENV=production is set in the Netlify UI.
+  NPM_FLAGS = "--include=dev"
   # Netlify secrets scanning: skip build output and dependencies.
   # Real credentials are provided via Netlify environment variables
   # (Site Settings -> Environment Variables) and are never committed.
