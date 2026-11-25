@@ -1,15 +1,7 @@
-[build]
-  # Use webpack instead of Turbopack (Turbopack can crash on Linux CI runners)
-  command = "next build --webpack"
-  publish = ".next"
-
 [build.environment]
-  # Next.js 16 toolchain (nanoid@6 etc.) expects Node.js 22+
+  # Next.js 16 toolchain expects Node.js 22+
   NODE_VERSION = "22"
-  # Avoid out-of-memory during the production build on Netlify's runner
-  NODE_OPTIONS = "--max-old-space-size=4096"
-  # Ensure devDependencies (typescript, tailwindcss, babel-plugin-react-compiler)
-  # are installed even if NODE_ENV=production is set in the Netlify UI.
+  # Ensure devDependencies are installed during the Netlify build
   NPM_FLAGS = "--include=dev"
   # Netlify secrets scanning: skip build output and dependencies.
   # Real credentials are provided via Netlify environment variables
