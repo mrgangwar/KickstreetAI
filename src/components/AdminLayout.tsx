@@ -359,7 +359,7 @@ export default function AdminLayout({
 
     try {
       await signOut({
-        callbackUrl: "/login",
+        callbackUrl: "/",
       });
     } catch {
       setLoggingOut(false);
