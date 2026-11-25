@@ -380,7 +380,9 @@ function createFallbackResponse(
 }
 
 function isRetryableStatus(status: number): boolean {
-  return status === 429 || status >= 500;
+  // 429 (quota/rate limit) is NOT retryable — if daily quota is exhausted,
+  // retries just waste time. Fall back immediately.
+  return status >= 500;
 }
 
 function wait(ms: number): Promise<void> {
