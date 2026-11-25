@@ -3,9 +3,7 @@ import {
   withAuth,
 } from "next-auth/middleware";
 
-import {
-  NextResponse,
-} from "next/server";
+import { NextResponse } from "next/server";
 
 /* =========================================
    CONSTANTS
@@ -33,105 +31,18 @@ function isValidUserId(
 
 export default withAuth(
   function middleware(req) {
-    /* =====================================
-       REQUEST DETAILS
-    ===================================== */
-
-    const token =
-      req.nextauth.token;
-
-    const pathname =
-      req.nextUrl.pathname;
-
-    /* =====================================
-       ADMIN ROUTE PROTECTION
-    ===================================== */
-
-    if (
-      pathname === "/admin" ||
-      pathname.startsWith("/admin/")
-    ) {
-      /* ===================================
-         INVALID SESSION
-      =================================== */
-
-      if (
-        !token ||
-        !isValidUserId(token.id) ||
-        token.error ===
-          "SessionInvalid"
-      ) {
-        const loginUrl =
-          new URL(
-            "/auth/login",
-            req.url
-          );
-
-        loginUrl.searchParams.set(
-          "callbackUrl",
-          req.nextUrl.pathname +
-            req.nextUrl.search
-        );
-
-        return NextResponse.redirect(
-          loginUrl
-        );
-      }
-
-      /* ===================================
-         ADMIN ROLE REQUIRED
-      =================================== */
-
-      if (
-        token.role !== "admin"
-      ) {
-        return NextResponse.redirect(
-          new URL(
-            "/",
-            req.url
-          )
-        );
-      }
-    }
-
-    /* =====================================
-       ALLOW REQUEST
-    ===================================== */
-
     return NextResponse.next();
   },
   {
-    /* =====================================
-       AUTHORIZATION CALLBACK
-    ===================================== */
-
     callbacks: {
-      authorized: ({
-        token,
-      }) => {
-        return (
-          !!token &&
-          isValidUserId(token.id) &&
-          token.error !==
-            "SessionInvalid"
-        );
+      authorized: ({ token }) => {
+        return !!token && isValidUserId(token.id) && token.error !== "SessionInvalid";
       },
     },
-
-    /* =====================================
-       CUSTOM LOGIN PAGE
-    ===================================== */
-
     pages: {
       signIn: "/auth/login",
     },
-
-    /* =====================================
-       NEXTAUTH SECRET
-    ===================================== */
-
-    secret:
-      process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
   }
 );
 
