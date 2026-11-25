@@ -1,4 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
 [build.environment]
+  # Next.js 16 requires Node.js >= 20.9
+  NODE_VERSION = "20"
   # Netlify secrets scanning: skip build output and dependencies.
   # Real credentials are provided via Netlify environment variables
   # (Site Settings -> Environment Variables) and are never committed.
