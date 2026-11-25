@@ -1,5 +1,6 @@
 [build]
-  command = "npm run build"
+  # Use webpack instead of Turbopack (Turbopack can crash on Linux CI runners)
+  command = "next build --webpack"
   publish = ".next"
 
 [build.environment]
